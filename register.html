@@ -1,34 +1,323 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <title>Registration Page</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register – AuthSystem</title>
+    <meta name="description" content="Create a new AuthSystem account." />
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h2>Register</h2>
 
-    <form>
-      <label>Name:</label><br />
-      <input type="text" name="name" /><br /><br />
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" id="darkToggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+      <i class="bi bi-moon-stars-fill"></i>
+    </button>
 
-      <label>Email:</label><br />
-      <input type="email" name="email" /><br /><br />
+    <div class="auth-wrapper">
+      <div class="auth-card card border-0 page-fade" style="max-width:520px;">
+        <div class="card-body">
 
-      <label>Phone Number:</label><br />
-      <input type="tel" name="phone" /><br /><br />
+          <!-- Brand Logo -->
+          <div class="brand-logo">
+            <i class="bi bi-person-plus-fill"></i>
+          </div>
 
-      <label>Password:</label><br />
-      <input type="password" name="password" /><br /><br />
+          <h1 class="auth-title">Create Account</h1>
+          <p class="auth-subtitle">Join us today — it's completely free</p>
 
-      <label>Confirm Password:</label><br />
-      <input type="password" name="confirm-password" /><br /><br />
-    </form>
+          <!-- Registration Form -->
+          <form id="registerForm" novalidate>
 
-    <a href="login.html">
-      <button>Register</button>
-    </a>
+            <!-- Full Name -->
+            <div class="mb-3">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="fullName"
+                name="name"
+                placeholder="John Doe"
+                autocomplete="name"
+                required
+                minlength="2"
+              />
+              <div class="invalid-feedback">
+                <i class="bi bi-exclamation-circle-fill"></i> Please enter your full name (min 2 characters).
+              </div>
+            </div>
 
-    <br /><br />
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="regEmail" class="form-label">Email Address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="regEmail"
+                name="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+              />
+              <div class="invalid-feedback">
+                <i class="bi bi-exclamation-circle-fill"></i> Please enter a valid email address.
+              </div>
+            </div>
 
-    <a href="login.html">I already have an account</a>
+            <!-- Phone Number -->
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone Number</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-end-0 text-muted" style="border:1.5px solid #e2e8f0;border-right:none;border-radius:0.6rem 0 0 0.6rem;">
+                  <i class="bi bi-phone"></i>
+                </span>
+                <input
+                  type="tel"
+                  class="form-control border-start-0"
+                  id="phone"
+                  name="phone"
+                  placeholder="+91 98765 43210"
+                  autocomplete="tel"
+                  style="border-radius:0 0.6rem 0.6rem 0;"
+                  required
+                  pattern="[+]?[0-9\s\-]{7,15}"
+                />
+                <div class="invalid-feedback">
+                  <i class="bi bi-exclamation-circle-fill"></i> Please enter a valid phone number.
+                </div>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-1">
+              <label for="regPassword" class="form-label">Password</label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="regPassword"
+                  name="password"
+                  placeholder="Create a strong password"
+                  autocomplete="new-password"
+                  required
+                  minlength="8"
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  id="toggleRegPassword"
+                  aria-label="Toggle password visibility"
+                >
+                  <i class="bi bi-eye" id="regPassIcon"></i>
+                </button>
+                <div class="invalid-feedback">
+                  <i class="bi bi-exclamation-circle-fill"></i> Password must be at least 8 characters.
+                </div>
+              </div>
+            </div>
+
+            <!-- Password Strength Meter (Bonus) -->
+            <div class="strength-meter mb-3" id="strengthMeter" style="display:none;">
+              <div class="strength-bars">
+                <div class="strength-bar" id="bar1"></div>
+                <div class="strength-bar" id="bar2"></div>
+                <div class="strength-bar" id="bar3"></div>
+                <div class="strength-bar" id="bar4"></div>
+              </div>
+              <span class="strength-label" id="strengthLabel"></span>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-4">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="confirmPassword"
+                  name="confirm-password"
+                  placeholder="Re-enter your password"
+                  autocomplete="new-password"
+                  required
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  id="toggleConfirmPassword"
+                  aria-label="Toggle confirm password visibility"
+                >
+                  <i class="bi bi-eye" id="confirmPassIcon"></i>
+                </button>
+                <div class="invalid-feedback" id="confirmFeedback">
+                  <i class="bi bi-exclamation-circle-fill"></i> Passwords do not match.
+                </div>
+              </div>
+            </div>
+
+            <!-- Terms -->
+            <div class="form-check mb-4">
+              <input class="form-check-input" type="checkbox" id="agreeTerms" required />
+              <label class="form-check-label" for="agreeTerms">
+                I agree to the <a href="#" class="auth-link">Terms of Service</a> and <a href="#" class="auth-link">Privacy Policy</a>
+              </label>
+              <div class="invalid-feedback">You must accept the terms to continue.</div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary-custom mb-3" id="registerBtn">
+              <i class="bi bi-person-check-fill me-2"></i>
+              <span>Create Account</span>
+            </button>
+
+          </form>
+
+          <div class="divider">or</div>
+
+          <div class="text-center">
+            <span class="text-muted" style="font-size:0.9rem;">Already have an account? </span>
+            <a href="login.html" class="auth-link">Sign in</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmV5YBe7gIx5v4n3efXKX58dVHs"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      // ── Dark Mode ──────────────────────────────────────────
+      const darkToggle = document.getElementById('darkToggle');
+      const darkIcon   = darkToggle.querySelector('i');
+
+      function applyDarkMode(enabled) {
+        document.body.classList.toggle('dark-mode', enabled);
+        darkIcon.className = enabled ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+        localStorage.setItem('darkMode', enabled);
+      }
+
+      darkToggle.addEventListener('click', () => {
+        applyDarkMode(!document.body.classList.contains('dark-mode'));
+      });
+
+      if (localStorage.getItem('darkMode') === 'true') applyDarkMode(true);
+
+      // ── Password Toggles ───────────────────────────────────
+      function makeToggle(btnId, inputId, iconId) {
+        document.getElementById(btnId).addEventListener('click', function () {
+          const input = document.getElementById(inputId);
+          const icon  = document.getElementById(iconId);
+          const show  = input.type === 'password';
+          input.type  = show ? 'text' : 'password';
+          icon.className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+        });
+      }
+
+      makeToggle('toggleRegPassword',     'regPassword',     'regPassIcon');
+      makeToggle('toggleConfirmPassword', 'confirmPassword', 'confirmPassIcon');
+
+      // ── Password Strength Meter (Bonus) ────────────────────
+      const passwordInput  = document.getElementById('regPassword');
+      const strengthMeter  = document.getElementById('strengthMeter');
+      const bars           = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3'), document.getElementById('bar4')];
+      const strengthLabel  = document.getElementById('strengthLabel');
+
+      const levels = [
+        { label: 'Weak',   className: 'weak',   fill: 1 },
+        { label: 'Fair',   className: 'fair',   fill: 2 },
+        { label: 'Good',   className: 'good',   fill: 3 },
+        { label: 'Strong', className: 'strong', fill: 4 },
+      ];
+
+      function getStrength(pwd) {
+        let score = 0;
+        if (pwd.length >= 8)  score++;
+        if (pwd.length >= 12) score++;
+        if (/[A-Z]/.test(pwd) && /[a-z]/.test(pwd)) score++;
+        if (/\d/.test(pwd))   score++;
+        if (/[^A-Za-z0-9]/.test(pwd)) score++;
+        if (score <= 1) return 0;
+        if (score === 2) return 1;
+        if (score === 3) return 2;
+        return 3;
+      }
+
+      passwordInput.addEventListener('input', function () {
+        const val = this.value;
+        if (!val) {
+          strengthMeter.style.display = 'none';
+          return;
+        }
+        strengthMeter.style.display = 'block';
+        const lvl = getStrength(val);
+        const { label, className, fill } = levels[lvl];
+        bars.forEach((bar, i) => {
+          bar.className = 'strength-bar';
+          if (i < fill) bar.classList.add('filled', className);
+        });
+        strengthLabel.textContent = label;
+        strengthLabel.className   = 'strength-label ' + className;
+      });
+
+      // ── Form Validation ────────────────────────────────────
+      document.getElementById('registerForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const form    = this;
+        const btn     = document.getElementById('registerBtn');
+        const pass    = document.getElementById('regPassword').value;
+        const confirm = document.getElementById('confirmPassword');
+        const confFb  = document.getElementById('confirmFeedback');
+
+        let valid = form.checkValidity();
+
+        // Custom confirm-password check
+        if (pass !== confirm.value) {
+          confirm.classList.add('is-invalid');
+          confFb.innerHTML = '<i class="bi bi-exclamation-circle-fill"></i> Passwords do not match.';
+          valid = false;
+        } else {
+          confirm.classList.remove('is-invalid');
+        }
+
+        form.classList.add('was-validated');
+        if (!valid) return;
+
+        // Loading spinner
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border" role="status" aria-hidden="true"></span><span class="ms-2">Creating account…</span>';
+
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1500);
+      });
+
+      // Real-time confirm validation
+      document.getElementById('confirmPassword').addEventListener('input', function () {
+        const pass = document.getElementById('regPassword').value;
+        if (this.value && this.value !== pass) {
+          this.classList.add('is-invalid');
+        } else {
+          this.classList.remove('is-invalid');
+        }
+      });
+    </script>
   </body>
 </html>
